@@ -27,9 +27,9 @@ export default function Home() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <i className="fas fa-robot text-white text-sm"></i>
+                <i className="fas fa-leaf text-white text-sm"></i>
               </div>
-              <h1 className="text-xl font-semibold text-neutral-800">AI Content Capture</h1>
+              <h1 className="text-xl font-semibold text-neutral-800">Naturopathy</h1>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-secondary rounded-full"></div>
@@ -86,7 +86,7 @@ export default function Home() {
           <CardContent className="p-6">
             <h2 className="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
               <i className="fab fa-google-drive text-blue-500 mr-2"></i>
-              Google Docs Integration
+              Patient Records Integration
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -98,8 +98,8 @@ export default function Home() {
                       <CheckCircle className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-medium text-neutral-800">Ready for Upload</p>
-                      <p className="text-sm text-neutral-500">Connect Google account to start</p>
+                      <p className="font-medium text-neutral-800">Ready for Records</p>
+                      <p className="text-sm text-neutral-500">Connect to sync patient data</p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">

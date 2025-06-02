@@ -135,7 +135,7 @@ export default function CameraTab() {
       <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-6 border border-blue-200">
         <h2 className="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <Camera className="text-primary mr-2 h-5 w-5" />
-          Take Photo
+          Medical Images
         </h2>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button className="flex-1" size="lg">
@@ -175,8 +175,8 @@ export default function CameraTab() {
             <Upload className="h-8 w-8 text-neutral-500" />
           </div>
           <div>
-            <p className="text-lg font-medium text-neutral-800">Drop images here or click to browse</p>
-            <p className="text-sm text-neutral-500 mt-1">Support for JPG, PNG, GIF, WebP up to 10MB</p>
+            <p className="text-lg font-medium text-neutral-800">Drop medical images here or click to browse</p>
+            <p className="text-sm text-neutral-500 mt-1">Upload X-rays, lab results, skin conditions, or other medical imagery</p>
           </div>
           <Button onClick={() => fileInputRef.current?.click()}>
             Browse Files

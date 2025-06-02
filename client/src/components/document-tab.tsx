@@ -170,10 +170,10 @@ export default function DocumentTab() {
       <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl p-6 border border-green-200">
         <h2 className="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <FileText className="text-green-600 mr-2 h-5 w-5" />
-          Upload Documents
+          Medical Documents
         </h2>
         <p className="text-neutral-600 mb-4">
-          Upload text documents to extract and analyze their content with AI
+          Upload patient records, lab reports, prescriptions, and medical documents for AI analysis
         </p>
         <Button 
           className="w-full sm:w-auto" 

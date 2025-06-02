@@ -208,7 +208,7 @@ export default function AudioTab() {
       <div className="bg-gradient-to-br from-red-50 to-pink-100 rounded-xl p-6 border border-red-200">
         <h2 className="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <Mic className="text-red-500 mr-2 h-5 w-5" />
-          Audio Recording
+          Patient Audio Notes
         </h2>
         
         <div className="text-center space-y-4">
@@ -269,8 +269,8 @@ export default function AudioTab() {
             <FileAudio className="h-8 w-8 text-neutral-500" />
           </div>
           <div>
-            <p className="text-lg font-medium text-neutral-800">Upload audio files</p>
-            <p className="text-sm text-neutral-500 mt-1">Support for MP3, WAV, M4A up to 25MB</p>
+            <p className="text-lg font-medium text-neutral-800">Upload patient consultations & notes</p>
+            <p className="text-sm text-neutral-500 mt-1">Record patient sessions, voice notes, or upload audio files</p>
           </div>
           <Button 
             variant="secondary"
