@@ -43,24 +43,35 @@ export default function Home() {
         {/* Main Content */}
         <Card className="shadow-sm border border-neutral-200 overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-neutral-100 p-1 rounded-none">
+            <TabsList className="grid w-full grid-cols-3 bg-neutral-100 p-1 rounded-none">
               <TabsTrigger 
-                value="camera" 
+                value="documents" 
+                className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-white"
+              >
+                <FileText className="h-4 w-4" />
+                Documents
+              </TabsTrigger>
+              <TabsTrigger 
+                value="images" 
                 className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 <Camera className="h-4 w-4" />
-                Camera & Images
+                Images
               </TabsTrigger>
               <TabsTrigger 
                 value="audio" 
                 className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 <Mic className="h-4 w-4" />
-                Audio Recording
+                Audio
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="camera" className="m-0">
+            <TabsContent value="documents" className="m-0">
+              <DocumentTab />
+            </TabsContent>
+
+            <TabsContent value="images" className="m-0">
               <CameraTab />
             </TabsContent>
 
