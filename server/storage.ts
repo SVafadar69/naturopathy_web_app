@@ -1,4 +1,6 @@
 import { uploads, googleDocsSettings, type Upload, type InsertUpload, type GoogleDocsSettings, type InsertGoogleDocsSettings } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // Upload operations
@@ -15,87 +17,65 @@ export interface IStorage {
   deleteGoogleDocsSettings(userId: string): Promise<boolean>;
 }
 
-export class MemStorage implements IStorage {
-  private uploads: Map<number, Upload>;
-  private googleDocsSettings: Map<string, GoogleDocsSettings>;
-  private currentUploadId: number;
-  private currentSettingsId: number;
-
-  constructor() {
-    this.uploads = new Map();
-    this.googleDocsSettings = new Map();
-    this.currentUploadId = 1;
-    this.currentSettingsId = 1;
-  }
-
-  async createUpload(insertUpload: InsertUpload): Promise<Upload> {
-    const id = this.currentUploadId++;
-    const upload: Upload = {
-      ...insertUpload,
-      id,
-      processed: insertUpload.processed ?? false,
-      aiAnalysis: insertUpload.aiAnalysis ?? null,
-      transcription: insertUpload.transcription ?? null,
-      uploadedToGoogleDocs: insertUpload.uploadedToGoogleDocs ?? false,
-      googleDocsUrl: insertUpload.googleDocsUrl ?? null,
-      createdAt: new Date(),
-    };
-    this.uploads.set(id, upload);
-    return upload;
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUpload(id: number): Promise<Upload | undefined> {
-    return this.uploads.get(id);
+    const [upload] = await db.select().from(uploads).where(eq(uploads.id, id));
+    return upload || undefined;
   }
 
   async getAllUploads(): Promise<Upload[]> {
-    return Array.from(this.uploads.values()).sort((a, b) => 
-      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
+    const allUploads = await db.select().from(uploads).orderBy(uploads.createdAt);
+    return allUploads.reverse(); // Most recent first
+  }
+
+  async createUpload(insertUpload: InsertUpload): Promise<Upload> {
+    const [upload] = await db
+      .insert(uploads)
+      .values(insertUpload)
+      .returning();
+    return upload;
   }
 
   async updateUpload(id: number, updates: Partial<Upload>): Promise<Upload | undefined> {
-    const existing = this.uploads.get(id);
-    if (!existing) return undefined;
-
-    const updated = { ...existing, ...updates };
-    this.uploads.set(id, updated);
-    return updated;
+    const [upload] = await db
+      .update(uploads)
+      .set(updates)
+      .where(eq(uploads.id, id))
+      .returning();
+    return upload || undefined;
   }
 
   async deleteUpload(id: number): Promise<boolean> {
-    return this.uploads.delete(id);
+    const result = await db.delete(uploads).where(eq(uploads.id, id));
+    return result.rowCount > 0;
   }
 
   async createGoogleDocsSettings(insertSettings: InsertGoogleDocsSettings): Promise<GoogleDocsSettings> {
-    const id = this.currentSettingsId++;
-    const settings: GoogleDocsSettings = {
-      ...insertSettings,
-      id,
-      documentId: insertSettings.documentId ?? null,
-      documentTitle: insertSettings.documentTitle ?? null,
-      createdAt: new Date(),
-    };
-    this.googleDocsSettings.set(insertSettings.userId, settings);
+    const [settings] = await db
+      .insert(googleDocsSettings)
+      .values(insertSettings)
+      .returning();
     return settings;
   }
 
   async getGoogleDocsSettings(userId: string): Promise<GoogleDocsSettings | undefined> {
-    return this.googleDocsSettings.get(userId);
+    const [settings] = await db.select().from(googleDocsSettings).where(eq(googleDocsSettings.userId, userId));
+    return settings || undefined;
   }
 
   async updateGoogleDocsSettings(userId: string, updates: Partial<GoogleDocsSettings>): Promise<GoogleDocsSettings | undefined> {
-    const existing = this.googleDocsSettings.get(userId);
-    if (!existing) return undefined;
-
-    const updated = { ...existing, ...updates };
-    this.googleDocsSettings.set(userId, updated);
-    return updated;
+    const [settings] = await db
+      .update(googleDocsSettings)
+      .set(updates)
+      .where(eq(googleDocsSettings.userId, userId))
+      .returning();
+    return settings || undefined;
   }
 
   async deleteGoogleDocsSettings(userId: string): Promise<boolean> {
-    return this.googleDocsSettings.delete(userId);
+    const result = await db.delete(googleDocsSettings).where(eq(googleDocsSettings.userId, userId));
+    return result.rowCount > 0;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
