@@ -33,6 +33,11 @@ export class MemStorage implements IStorage {
     const upload: Upload = {
       ...insertUpload,
       id,
+      processed: insertUpload.processed ?? false,
+      aiAnalysis: insertUpload.aiAnalysis ?? null,
+      transcription: insertUpload.transcription ?? null,
+      uploadedToGoogleDocs: insertUpload.uploadedToGoogleDocs ?? false,
+      googleDocsUrl: insertUpload.googleDocsUrl ?? null,
       createdAt: new Date(),
     };
     this.uploads.set(id, upload);
@@ -67,6 +72,8 @@ export class MemStorage implements IStorage {
     const settings: GoogleDocsSettings = {
       ...insertSettings,
       id,
+      documentId: insertSettings.documentId ?? null,
+      documentTitle: insertSettings.documentTitle ?? null,
       createdAt: new Date(),
     };
     this.googleDocsSettings.set(insertSettings.userId, settings);

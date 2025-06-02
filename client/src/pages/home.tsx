@@ -5,12 +5,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import CameraTab from "@/components/camera-tab";
 import AudioTab from "@/components/audio-tab";
-import { Camera, Mic, CheckCircle, ExternalLink } from "lucide-react";
+import DocumentTab from "@/components/document-tab";
+import { Camera, Mic, FileText, CheckCircle, ExternalLink } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { Upload } from "@shared/schema";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("camera");
+  const [activeTab, setActiveTab] = useState("documents");
 
   const { data: uploads = [], isLoading } = useQuery<Upload[]>({
     queryKey: ["/api/uploads"],

@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertUploadSchema } from "@shared/schema";
@@ -6,7 +6,11 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import OpenAI from "openai";
-import { google } from "googleapis";
+
+// Define the multer request interface
+interface MulterRequest extends Request {
+  file?: Express.Multer.File;
+}
 
 // Configure multer for file uploads
 const upload = multer({
@@ -47,7 +51,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Upload file
-  app.post("/api/uploads", upload.single("file"), async (req, res) => {
+  app.post("/api/uploads", upload.single("file"), async (req: MulterRequest, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: "No file uploaded" });
