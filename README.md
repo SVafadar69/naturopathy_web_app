@@ -62,14 +62,102 @@ Before you begin, you'll need:
 
 ## Database Setup
 
-### Option 1: Automatic Setup (Recommended)
-The application can automatically create a PostgreSQL database for you. No additional setup required.
+### Initial Database Creation
 
-### Option 2: Use Your Own Database
-If you have an existing PostgreSQL database:
-1. Create a new database for the application
-2. Update the `DATABASE_URL` in your `.env` file
-3. Run `npm run db:push` to create the necessary tables
+The application uses PostgreSQL to store patient records, medical documents, and analysis results. You have several options:
+
+#### Option 1: Cloud Database (Recommended for Production)
+1. **Create a cloud PostgreSQL database:**
+   - Neon (free tier available): https://neon.tech
+   - Supabase (free tier): https://supabase.com
+   - Railway (free tier): https://railway.app
+   - Or any PostgreSQL hosting provider
+
+2. **Get your connection string:**
+   After creating the database, you'll receive a connection URL that looks like:
+   ```
+   postgresql://username:password@hostname:5432/database_name
+   ```
+
+3. **Add to your environment:**
+   In your `.env` file, add:
+   ```
+   DATABASE_URL=postgresql://username:password@hostname:5432/database_name
+   ```
+
+#### Option 2: Local Database
+1. **Install PostgreSQL locally:**
+   - Download from https://postgresql.org/download/
+   - Follow the installation wizard
+   - Remember the password you set during installation
+
+2. **Create a database:**
+   ```bash
+   # Connect to PostgreSQL (replace 'postgres' with your username if different)
+   psql -U postgres
+   
+   # Create a new database
+   CREATE DATABASE naturopathy_app;
+   
+   # Exit PostgreSQL
+   \q
+   ```
+
+3. **Set your connection string:**
+   ```
+   DATABASE_URL=postgresql://postgres:your_password@localhost:5432/naturopathy_app
+   ```
+
+### Initialize Database Tables
+
+After setting up your database connection:
+
+1. **Create the database schema:**
+   ```bash
+   npm run db:push
+   ```
+   
+   This command creates the necessary tables:
+   - `uploads` - Stores information about uploaded files and AI analysis
+   - `google_docs_settings` - Stores Google Docs integration settings
+
+2. **Verify the setup:**
+   The command should output:
+   ```
+   [✓] Changes applied
+   ```
+
+### Example Database Configuration
+
+Here's a complete example of setting up with a cloud database:
+
+**Step 1: Create account at Neon.tech**
+- Sign up for free account
+- Create new project called "naturopathy-app"
+- Copy the connection string provided
+
+**Step 2: Configure your environment**
+Create `.env` file:
+```
+OPENAI_API_KEY=sk-your_openai_key_here
+DATABASE_URL=postgresql://username:password@ep-example-123456.us-east-1.aws.neon.tech/naturopathy_app?sslmode=require
+```
+
+**Step 3: Initialize tables**
+```bash
+npm run db:push
+```
+
+**Step 4: Start the application**
+```bash
+npm run dev
+```
+
+Your database will now store:
+- Patient document uploads and AI analysis results
+- Medical image analysis data  
+- Audio transcriptions from patient consultations
+- Google Docs integration settings
 
 ## How to Use
 
